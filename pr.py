@@ -3,7 +3,10 @@ import subprocess
 import requests
 from ruamel.yaml import YAML
 
-GITHUB_TOKEN = ''
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+if not GITHUB_TOKEN:
+    raise ValueError("Please set the GITHUB_TOKEN environment variable.")
+
 GITHUB_REPO = 'Greg215/update-cidr-auto-commit' 
 GITHUB_API_URL = f"https://api.github.com/repos/{GITHUB_REPO}/pulls"
 default_branch = 'main'
