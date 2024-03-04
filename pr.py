@@ -3,6 +3,9 @@ import subprocess
 import requests
 from ruamel.yaml import YAML
 
+# Define the main branch variable
+MAIN_BRANCH = 'main'
+
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 if not GITHUB_TOKEN:
     raise ValueError("Please set the GITHUB_TOKEN environment variable.")
@@ -72,7 +75,7 @@ def create_pull_request(branch_name, application_name):
     data = {
         "title": f"Update CIDRs for {application_name}",
         "head": branch_name,
-        "base": "main",
+        "base": MAIN_BRANCH,
         "body": f"Automated pull request to update CIDRs for {application_name}.",
         "draft": False
     }
@@ -89,7 +92,7 @@ def process_application_file(file_path, application_name):
     existing_branches = run_git_command(['git', 'branch', '--list', branch_name], capture_output=True)
     if branch_name not in existing_branches:
         # Create a new branch from main/master (adjust as needed)
-        run_git_command(['git', 'checkout', 'main'])
+        run_git_command(['git', 'checkout', MAIN_BRANCH])
         run_git_command(['git', 'pull'])
         run_git_command(['git', 'checkout', '-b', branch_name])
     else:
@@ -110,7 +113,7 @@ def process_application_file(file_path, application_name):
             print(f"Skipped creating pull request for '{branch_name}'.")
     else:
         # No changes made, return to the main branch
-        run_git_command(['git', 'checkout', 'main'])
+        run_git_command(['git', 'checkout', MAIN_BRANCH])
 
 def check_and_update_files(root_dir):
     for root, dirs, files in os.walk(root_dir):
