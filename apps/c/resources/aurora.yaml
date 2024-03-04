@@ -1,0 +1,19 @@
+apiVersion: monteur.wolt.com/v1beta1
+kind: Aurora
+spec:
+  - name: db
+    engine: "aurora-postgresql"
+    engineMode: "provisioned"
+    psqlVersion: "14.10"
+    storageEncrypted: true
+    overrides:
+      - env: dev
+        stage: development
+        extraIngressRules:
+          CIDRs:
+            - 10.254.8.0/21
+      - env: prod
+        stage: production
+        extraIngressRules:
+          CIDRs:
+            - 10.254.16.0/21
