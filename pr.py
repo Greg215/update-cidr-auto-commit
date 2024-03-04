@@ -99,11 +99,15 @@ def process_application_file(file_path, application_name):
     if update_yaml_file(file_path, application_name):
         # Add, commit, and push changes
         run_git_command(['git', 'add', file_path])
-        commit_message = f"Update CIDRs for {application_name}"
+        commit_message = f"[obs-227] add OBS cidr to DB instance security group for {application_name}"
         run_git_command(['git', 'commit', '-m', commit_message])
         run_git_command(['git', 'push', '--set-upstream', 'origin', branch_name])
 
-        create_pull_request(branch_name, application_name)
+        user_input = input(f"Do you want to create a pull request for '{branch_name}'? [y/N]: ").strip().lower()
+        if user_input == 'y':
+            create_pull_request(branch_name, application_name)
+        else:
+            print(f"Skipped creating pull request for '{branch_name}'.")
     else:
         # No changes made, return to the main branch
         run_git_command(['git', 'checkout', 'main'])
