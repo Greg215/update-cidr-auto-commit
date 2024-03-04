@@ -103,6 +103,8 @@ def process_application_file(file_path, application_name):
         commit_message = f"Update CIDRs for {application_name}"
         run_git_command(['git', 'commit', '-m', commit_message])
         run_git_command(['git', 'push', '--set-upstream', 'origin', branch_name])
+
+        create_pull_request(branch_name, application_name)
     else:
         # No changes made, return to the main branch
         run_git_command(['git', 'checkout', 'main'])
