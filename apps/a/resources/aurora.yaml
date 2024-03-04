@@ -2,8 +2,8 @@ apiVersion: monteur.wolt.com/v1beta1
 kind: Aurora
 spec:
   - name: db14
-    engine: aurora-postgresql
-    engineMode: provisioned
+    engine: "aurora-postgresql"
+    engineMode: "provisioned"
     psqlVersion: "14.10"
     mountPathSuffix: pg14
     extensions:
@@ -17,7 +17,7 @@ spec:
       - name: pg_partman
         schema: partman
     tags:
-      aws-backup: tier3
+      aws-backup: "tier3"
     publications:
       - name: debezium_cdc_pub
         owner: debezium
@@ -27,13 +27,9 @@ spec:
         stage: development
         extraIngressRules:
           sgIDs:
-            - sg-xxx
-          CIDRs:
-            - 10.219.0.0/18
+            - "sg-xxx"
       - env: prod
         stage: production
         extraIngressRules:
           sgIDs:
-            - sg-xxx
-          CIDRs:
-            - 10.120.0.0/18
+            - "sg-xxx"
