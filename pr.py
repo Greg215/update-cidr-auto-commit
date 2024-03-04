@@ -9,7 +9,6 @@ if not GITHUB_TOKEN:
 
 GITHUB_REPO = 'Greg215/update-cidr-auto-commit' 
 GITHUB_API_URL = f"https://api.github.com/repos/{GITHUB_REPO}/pulls"
-default_branch = 'main'
 
 def run_git_command(command, capture_output=False):
     try:
@@ -73,7 +72,7 @@ def create_pull_request(branch_name, application_name):
     data = {
         "title": f"Update CIDRs for {application_name}",
         "head": branch_name,
-        "base": {default_branch},
+        "base": "main",
         "body": f"Automated pull request to update CIDRs for {application_name}.",
         "draft": False
     }
