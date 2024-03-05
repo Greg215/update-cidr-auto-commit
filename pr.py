@@ -82,8 +82,11 @@ def create_pull_request(branch_name, application_name):
     response = requests.post(GITHUB_API_URL, json=data, headers=headers)
     if response.status_code == 201:
         print(f"Pull request created successfully for {branch_name}.")
+        pr_url = response.json().get('html_url')  # Get the URL of the created PR
+        return pr_url  # Return the URL for further use
     else:
         print(f"Failed to create pull request for {branch_name}. Response: {response.text}")
+        return None
 
 
 def process_application_file(file_path, application_name):
@@ -108,7 +111,10 @@ def process_application_file(file_path, application_name):
 
         user_input = input(f"Do you want to create a pull request for '{branch_name}'? [y/N]: ").strip().lower()
         if user_input == 'y':
-            create_pull_request(branch_name, application_name)
+            pr_url = create_pull_request(branch_name, application_name)  # Capture the returned PR URL
+            if pr_url:  # If a URL was returned, write it to a file
+                with open("pr_links_table.txt", "a") as file:  # Open file in append mode
+                    file.write(f"{application_name}\t{pr_url}\n")  # Write app name and PR URL as a tab-separated row
         else:
             print(f"Skipped creating pull request for '{branch_name}'.")
     else:
