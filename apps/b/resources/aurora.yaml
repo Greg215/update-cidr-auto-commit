@@ -2,12 +2,18 @@ apiVersion: monteur.wolt.com/v1beta1
 kind: Aurora
 spec:
   - name: db
-    engine: "aurora-postgresql"
-    engineMode: "provisioned"
+    engine: aurora-postgresql
+    engineMode: provisioned
     psqlVersion: "15.3"
     storageEncrypted: true
     overrides:
       - env: dev
         stage: development
+        extraIngressRules:
+          CIDRs:
+            - 10.219.0.0/18
       - env: prod
         stage: production
+        extraIngressRules:
+          CIDRs:
+            - 10.120.0.0/18
